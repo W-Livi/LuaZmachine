@@ -14,7 +14,7 @@ I've been referring to the February 2014 revision of the [Z-Machine Standards Do
 I'm also looking to support the [Quetzal save format](https://inform-fiction.org/zmachine/standards/quetzal/), because interoperability is always a good idea.
 
 ## How do I run this?
-You don't; not yet.
+You don't; not yet.  
 Despite many years having passed between now and when I first started on this, it's nowhere near ready to run anything.  
 That's mostly due to having forgotten and set aside the project a number of times, rather than any inherent, glacial slowness to my process.
 
