@@ -10,7 +10,8 @@ Two main reasons:
   2. I wanted to play Zork via the Lua-driven text terminals offered by a couple of Minecraft mods.
 
 ## Where are you drawing the technical specs from?
-I've been referring to the February 2014 revision of the [Z-Machine Standards Document version 1.1](https://inform-fiction.org/zmachine/standards/z1point1/)
+I've been referring to the February 2014 revision of the [Z-Machine Standards Document version 1.1](https://inform-fiction.org/zmachine/standards/z1point1/).
+I'm also looking to support the [Quetzal save format](https://inform-fiction.org/zmachine/standards/quetzal/), because interoperability is always a good idea.
 
 ## How do I run this?
 Despite many years having passed between now and when I first started on this, it's nowhere near ready to run anything.
