@@ -6,7 +6,7 @@ The project shown here is my on-again-off-again personal interest project of try
 
 ## Why?
 Two main reasons:
-  1. I wanted to teach myself more about how the Z-machine operate.
+  1. I wanted to teach myself more about how the Z-machine operates.
   2. I wanted to play Zork via the Lua-driven text terminals offered by a couple of Minecraft mods.
 
 ## Where are you drawing the technical specs from?
@@ -15,6 +15,6 @@ I'm also looking to support the [Quetzal save format](https://inform-fiction.org
 
 ## How do I run this?
 Despite many years having passed between now and when I first started on this, it's nowhere near ready to run anything.  
-That's mostly due to having forgotten and set aside the project a number of times, rather than an inherent, glacial slowness to my process.
+That's mostly due to having forgotten and set aside the project a number of times, rather than any inherent, glacial slowness to my process.
 
 -- _Liv_
