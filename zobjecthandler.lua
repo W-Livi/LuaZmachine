@@ -45,37 +45,53 @@ function zobjecthandler:configFor(version, objtable_address)
 	end
 end
 
+function zobjecthandler:objidInRange(id)
+	return id != nil and id >= self.objid_min and id <= self.objid_max
+end
+
+function zobjecthandler:attribInRange(id)
+	return id != nil and id >= self.attrib_min and id <= self.attrib_max
+end
+
+function zobjecthandler:propInRange(id)
+	return id != nil and id >= self.prop_min and id <= self.prop_max
+end
+
 function zobjecthandler:objectAddress(id)
-	if id < self.objid_min or id > self.objid_max then
-		return nil
-	else
+	if self:objidInRange(id) then
 		return self.obj1_address + ((id-1) * self.objdef_size)
+	else
+		return nil
 	end
 end
 
 function zobjecthandler:defaultPropertyAddress(id)
-	if id < self.propid_min or id > self.propid_max then
-		return nil
-	else
+	if self:propInRange(id) then
 		return self.defprop1_address + ((id-1) * 2)
+	else
+		return nil
 	end
 end
 
 function zobjecthandler:readProperty(objid, propid, memory)
-	local first_addy = memory.getWordB(self:objectAddress(objid) + self.objdef_offset_prop)
-	if self.prop_mode == 1 then
-		return self:readPropertyMode1(first_addy, propid, memory)
-	elseif self.prop_mode == 2 then
-		return self:readPropertyMode2(first_addy, propid, memory)
+	if self:objidInRange(objid) and self:propInRange(propid) then
+		local first_addy = memory.getWordB(self:objectAddress(objid) + self.objdef_offset_prop)
+		if self.prop_mode == 1 then
+			return self:readPropertyMode1(first_addy, propid, memory)
+		elseif self.prop_mode == 2 then
+			return self:readPropertyMode2(first_addy, propid, memory)
+		end
+	else
+		return nil
 	end
 end
 
 function zobjecthandler:readPropertyDefault(propid, memory)
 	local addy = self:defaultPropertyAddress(propid)
-	if (addy == nil) then
-		return nil
-	else
+	if (addy ~= nil) then
 		return memory:getBytes(addy, 2)
+	else
+		return nil
 	end
 end
 
@@ -119,11 +135,59 @@ function zobjecthandler:readPropertyMode2(next_addy, propid, memory)
 	return memory:getBytes(value_addy, size)
 end
 
+function zobjecthandler:locateAttribute(objid, attrib)
+	if self:objidInRange(objid) and self:attribInRange(attrib) then
+		local address = self:objectAddress(objid) + self.objdef_offset_attrib + math.floor(attrib / 8)
+		local shift = attrib % 8
+		return address, shift
+	else
+		return nil, nil
+	end
+end
 
+function zobjecthandler:setAttribute(objid, attrib, memory)
+	local address, shift = self:locateAttribute(objid, attrib)
+	if (address ~= nil or shift ~= nil) then
+		local mask = bit.lshift(1, shift)
+		local byte = memory:getByte(address)
+		byte = bit.bor(byte, mask)
+		memory:setByte(address, byte)
+	end
+end
 
+function zobjecthandler:clearAttribute(objid, attrib, memory)
+	local address, shift = self:locateAttribute(objid, attrib)
+	if (address ~= nil or shift ~= nil) then
+		local mask = bit.bxor(bit.lshift(1, shift), 0xff)
+		local byte = memory:getByte(address)
+		byte = bit.band(byte, mask)
+		memory:setByte(address, byte)
+	end
+end
 
+function zobjecthandler:toggleAttribute(objid, attrib, memory)
+	local address, shift = self:locateAttribute(objid, attrib)
+	if (address ~= nil or shift ~= nil) then
+		local mask = bit.lshift(1, shift)
+		local byte = memory:getByte(address)
+		byte = bit.bxor(byte, mask)
+		memory:setByte(address, byte)
+	end
+end
 
-
+function zobjecthandler:checkAttribute(objid, attrib, memory)
+	local address, shift = self:locateAttribute(objid, attrib)
+	if (address ~= nil or shift ~= nil) then
+		local mask = bit.lshift(1, shift)
+		local byte = memory:getByte(address)
+		byte = bit.band(byte, mask)
+		if (byte ~= 0) then
+			return true
+		else
+			return false
+		end
+	end
+end
 
 zobjecthandler:configFor(nil, nil);
 

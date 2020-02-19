@@ -57,6 +57,10 @@ function zmemory:getWordW(wordaddress)
 	return self:getWordB(self:translateWordAddress(wordaddress))
 end
 
+function zmemory:setByte(byteaddress, byte)
+	self.bytes[byteaddress] = byte
+end
+
 function zmemory:getHeaderByte(byteoffset)
 	return self.bytes[byteoffset + self.header_start]
 end
